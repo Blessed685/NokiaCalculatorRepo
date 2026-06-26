@@ -12,38 +12,39 @@ import androidx.compose.ui.tooling.preview.Preview
 
 @Composable
 fun CalcScreenAndButton(){
-    Column(Modifier.fillMaxWidth()
-        .fillMaxHeight(0.55f)
-    ){
-        Row(Modifier.fillMaxSize()
-            .weight(3f)
+    Column(Modifier.fillMaxSize()){
+        Column(Modifier.fillMaxWidth()
+            .fillMaxHeight(0.55f)
         ){
-            // Display -> operator on the left side, input on the right side
+            Row(Modifier.fillMaxSize()
+                .weight(3f)
+            ){
+                // Display -> operator on the left side, input on the right side
+            }
+            Column(Modifier.fillMaxSize()
+                .weight(6f)
+            ){
+                // Center circle with each of the four operators on each edge
+            }
+            Row(Modifier.fillMaxSize()
+                .weight(2f)
+            ){
+                // "Equals" on the left side, "Clear" on the right side
+            }
+            Column(Modifier.fillMaxSize()
+                .weight(2f)
+            ){
+                // Input field which allows only numbers, decimal and negative (-) input
+            }
         }
-        Column(Modifier.fillMaxSize()
-            .weight(6f)
-        ){
-            // Center circle with each of the four operators on each edge
-        }
-        Row(Modifier.fillMaxSize()
-            .weight(2f)
-        ){
-            // "Equals" on the left side, "Clear" on the right side
-        }
-        Column(Modifier.fillMaxSize()
-            .weight(2f)
-        ){
-            // Input field which allows only numbers, decimal and negative (-) input
-        }
+        Box(Modifier.fillMaxSize())
     }
+
 }
 
 
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun PreviewCalculator(){
-    Column {
-        CalcScreenAndButton()
-        Box(Modifier.fillMaxSize())
-    }
+    CalcScreenAndButton()
 }
