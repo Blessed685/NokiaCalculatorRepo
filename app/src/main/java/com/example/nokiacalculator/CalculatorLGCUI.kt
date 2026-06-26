@@ -101,16 +101,16 @@ fun CalcScreenAndButton(){
                 OutlinedTextField(
                     value = input,
                     onValueChange = { newInput ->
-                        // Assume the input is acceptable.
+                        // Assume the input is valid.
                         var validInput = true
-                        // Count how many decimal points the user entered.
+                        // Count decimal points.
                         var decimalCount = 0
-                        // Examine every character the user typed.
+                        // Check every character.
                         for (character in newInput) {
                             if (character == '.') {
                                 decimalCount++
                             }
-                            // Reject anything that isn't a digit, '.', or '-'
+                            // Reject any character that isn't a digit, '.' or '-'.
                             if (
                                 !character.isDigit() &&
                                 character != '.' &&
@@ -119,28 +119,49 @@ fun CalcScreenAndButton(){
                                 validInput = false
                             }
                         }
-                        // Reject more than one decimal point.
+                        // Allow only one decimal point.
                         if (decimalCount > 1) {
                             validInput = false
                         }
-                        // Check the minus sign.
+                        // Count minus signs.
                         var minusCount = 0
                         for (index in newInput.indices) {
                             if (newInput[index] == '-') {
                                 minusCount++
-                                // '-' is only allowed as the first character.
+                                // Minus sign must be the first character.
                                 if (index != 0) {
                                     validInput = false
                                 }
                             }
                         }
-                        // Reject multiple minus signs.
+                        // Allow only one minus sign.
                         if (minusCount > 1) {
                             validInput = false
                         }
-                        // Update the text field only if everything is valid.
+                        // If valid, clean up the input.
                         if (validInput) {
-                            input = newInput
+                            var cleanedInput = newInput
+                            // Remove unnecessary leading zeros.
+                            while (
+                                cleanedInput.length > 1 &&
+                                cleanedInput.startsWith("0") &&
+                                cleanedInput[1] != '.'
+                            ) {
+                                cleanedInput = cleanedInput.substring(1)
+                            }
+                            // Remove unnecessary zeros after a minus sign.
+                            if (cleanedInput.startsWith("-0")) {
+                                while (
+                                    cleanedInput.length > 2 &&
+                                    cleanedInput[1] == '0' &&
+                                    cleanedInput[2] != '.'
+                                ) {
+                                    cleanedInput =
+                                        "-" + cleanedInput.substring(2)
+                                }
+                            }
+                            // Update the TextField.
+                            input = cleanedInput
                         }
                     },
                     label = {
