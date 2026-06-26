@@ -2,6 +2,7 @@ package com.example.nokiacalculator
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -14,25 +15,25 @@ fun CalcScreenAndButton(){
     Column(Modifier.fillMaxWidth()
         .fillMaxHeight(0.55f)
     ){
-        Column(Modifier.fillMaxSize()
+        Row(Modifier.fillMaxSize()
             .weight(3f)
         ){
-
+            // Display -> operator on the left side, input on the right side
         }
         Column(Modifier.fillMaxSize()
             .weight(6f)
         ){
-
+            // Center circle with each of the four operators on each edge
+        }
+        Row(Modifier.fillMaxSize()
+            .weight(2f)
+        ){
+            // "Equals" on the left side, "Clear" on the right side
         }
         Column(Modifier.fillMaxSize()
             .weight(2f)
         ){
-
-        }
-        Column(Modifier.fillMaxSize()
-            .weight(2f)
-        ){
-
+            // Input field which allows only numbers, decimal and negative (-) input
         }
     }
 }
