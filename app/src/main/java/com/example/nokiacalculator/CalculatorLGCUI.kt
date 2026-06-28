@@ -70,7 +70,7 @@ fun CalcScreenAndButton(){
                     text = "+",
                     fontSize = 30.sp,
                     modifier = Modifier.clickable {
-                        // Don't allow an empty first number.
+                        /*// Don't allow an empty first number.
                         if (input.isNotEmpty()) {
                             // Remember the first number.
                             firstNumber = input
@@ -79,6 +79,14 @@ fun CalcScreenAndButton(){
                             // Clear the input field so the user can type
                             // the second number.
                             input = ""
+                        }*/
+                        if (input.isNotEmpty()) {
+                            firstNumber = input
+                            selectedOperator = "+"
+                            input = ""
+                        }
+                        else if (firstNumber.isNotEmpty()) {
+                            selectedOperator = "+"
                         }
                     }
                 )
@@ -89,10 +97,18 @@ fun CalcScreenAndButton(){
                         text = "÷",
                         fontSize = 30.sp,
                         modifier = Modifier.clickable {
+                            /*if (input.isNotEmpty()) {
+                                firstNumber = input
+                                selectedOperator = "÷"
+                                input = ""
+                            }*/
                             if (input.isNotEmpty()) {
                                 firstNumber = input
                                 selectedOperator = "÷"
                                 input = ""
+                            }
+                            else if (firstNumber.isNotEmpty()) {
+                                selectedOperator = "÷"
                             }
                         }
                     )
@@ -111,6 +127,9 @@ fun CalcScreenAndButton(){
                                 selectedOperator = "×"
                                 input = ""
                             }
+                            else if (firstNumber.isNotEmpty()) {
+                                selectedOperator = "×"
+                            }
                         }
                     )
                 }
@@ -122,6 +141,9 @@ fun CalcScreenAndButton(){
                             firstNumber = input
                             selectedOperator = "-"
                             input = ""
+                        }
+                        else if (firstNumber.isNotEmpty()) {
+                            selectedOperator = "-"
                         }
                     }
                 )
@@ -158,7 +180,8 @@ fun CalcScreenAndButton(){
                         // Make sure we have enough information.
                         if (
                             firstNumber.isNotEmpty() &&
-                            input.isNotEmpty()
+                            input.isNotEmpty() &&
+                            selectedOperator.isNotEmpty()
                         ) {
                             // Convert the text into numbers.
                             val number1 = firstNumber.toDouble()
@@ -174,11 +197,32 @@ fun CalcScreenAndButton(){
                             else if (selectedOperator == "×") {
                                 answer = number1 * number2
                             }
-                            else if (selectedOperator == "÷") {
+                            /*else if (selectedOperator == "÷") {
+                                if (number2 == 0.0) {
+                                    input = "Error"
+                                    firstNumber = ""
+                                    selectedOperator = ""
+                                    return@Button
+                                }
                                 answer = number1 / number2
+                            }*/
+                            else if (selectedOperator == "÷") {
+                                if (number2 == 0.0) {
+                                    input = "Error"
+                                }
+                                else {
+                                    answer = number1 / number2
+                                }
                             }
                             // Show the answer.
-                            input = answer.toString()
+                            if (input != "Error") {
+                                if (answer % 1.0 == 0.0) {
+                                    input = answer.toInt().toString()
+                                }
+                                else {
+                                    input = answer.toString()
+                                }
+                            }
                             // Prepare for a new calculation.
                             firstNumber = ""
                             selectedOperator = ""
@@ -188,8 +232,30 @@ fun CalcScreenAndButton(){
                     Text("=")
                 }
                 Text(
+
                     text = "Clear",
-                    fontSize = 20.sp
+
+                    fontSize = 20.sp,
+
+                    modifier = Modifier.clickable {
+
+                        if (input.isNotEmpty()) {
+
+                            input = input.dropLast(1)
+
+                        }
+                        else if (selectedOperator.isNotEmpty()) {
+
+                            input = firstNumber
+
+                            firstNumber = ""
+
+                            selectedOperator = ""
+
+                        }
+
+                    }
+
                 )
             }
             Column(
