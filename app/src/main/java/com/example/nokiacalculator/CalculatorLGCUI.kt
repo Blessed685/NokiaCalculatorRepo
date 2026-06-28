@@ -1,6 +1,7 @@
 package com.example.nokiacalculator
 
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -65,20 +66,65 @@ fun CalcScreenAndButton(){
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center
             ) {
-                Text("+", fontSize = 30.sp)
+                Text(
+                    text = "+",
+                    fontSize = 30.sp,
+                    modifier = Modifier.clickable {
+                        // Don't allow an empty first number.
+                        if (input.isNotEmpty()) {
+                            // Remember the first number.
+                            firstNumber = input
+                            // Remember the chosen operator.
+                            selectedOperator = "+"
+                            // Clear the input field so the user can type
+                            // the second number.
+                            input = ""
+                        }
+                    }
+                )
                 Row(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Text("÷", fontSize = 30.sp)
+                    Text(
+                        text = "÷",
+                        fontSize = 30.sp,
+                        modifier = Modifier.clickable {
+                            if (input.isNotEmpty()) {
+                                firstNumber = input
+                                selectedOperator = "÷"
+                                input = ""
+                            }
+                        }
+                    )
                     Box(
                         modifier = Modifier
                             .padding(horizontal = 20.dp)
                             .size(80.dp)
                             .border(2.dp, Color.Black, CircleShape)
                     )
-                    Text("×", fontSize = 30.sp)
+                    Text(
+                        text = "×",
+                        fontSize = 30.sp,
+                        modifier = Modifier.clickable {
+                            if (input.isNotEmpty()) {
+                                firstNumber = input
+                                selectedOperator = "×"
+                                input = ""
+                            }
+                        }
+                    )
                 }
-                Text("-", fontSize = 30.sp)
+                Text(
+                    text = "-",
+                    fontSize = 30.sp,
+                    modifier = Modifier.clickable {
+                        if (input.isNotEmpty()) {
+                            firstNumber = input
+                            selectedOperator = "-"
+                            input = ""
+                        }
+                    }
+                )
             }
             Row(
                 modifier = Modifier
@@ -89,7 +135,54 @@ fun CalcScreenAndButton(){
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Button(
+                    /*onClick = {
+                        // Make sure we have everything we need.
+                        if (
+                            firstNumber.isNotEmpty() &&
+                            input.isNotEmpty() &&
+                            selectedOperator == "+"
+                        ) {
+                            // Convert the text into numbers.
+                            val number1 = firstNumber.toDouble()
+                            val number2 = input.toDouble()
+                            // Perform the calculation.
+                            val answer = number1 + number2
+                            // Show the answer.
+                            input = answer.toString()
+                            // Forget the previous calculation.
+                            firstNumber = ""
+                            selectedOperator = ""
+                        }
+                    }*/
                     onClick = {
+                        // Make sure we have enough information.
+                        if (
+                            firstNumber.isNotEmpty() &&
+                            input.isNotEmpty()
+                        ) {
+                            // Convert the text into numbers.
+                            val number1 = firstNumber.toDouble()
+                            val number2 = input.toDouble()
+                            var answer = 0.0
+                            // Decide which calculation to perform.
+                            if (selectedOperator == "+") {
+                                answer = number1 + number2
+                            }
+                            else if (selectedOperator == "-") {
+                                answer = number1 - number2
+                            }
+                            else if (selectedOperator == "×") {
+                                answer = number1 * number2
+                            }
+                            else if (selectedOperator == "÷") {
+                                answer = number1 / number2
+                            }
+                            // Show the answer.
+                            input = answer.toString()
+                            // Prepare for a new calculation.
+                            firstNumber = ""
+                            selectedOperator = ""
+                        }
                     }
                 ) {
                     Text("=")
