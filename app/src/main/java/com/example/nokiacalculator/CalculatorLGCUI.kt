@@ -28,23 +28,34 @@ import androidx.compose.ui.unit.sp
 
 @Composable
 fun CalcScreenAndButton(){
+    var input by remember {
+        mutableStateOf("")
+    }
+    var firstNumber by remember {
+        mutableStateOf("")
+    }
+    var selectedOperator by remember {
+        mutableStateOf("")
+    }
     Column(Modifier.fillMaxSize()){
         Column(Modifier.fillMaxWidth()
             .fillMaxHeight(0.55f)
         ){
-            Row(Modifier.fillMaxWidth()
-                .weight(3f)
-                .padding(horizontal = 20.dp),
-                Arrangement.SpaceBetween,
-                Alignment.CenterVertically
-            ){
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(3f)
+                    .padding(horizontal = 16.dp),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
                 Text(
-                    "+",
-                    fontSize = 30.sp
+                    text = selectedOperator,
+                    fontSize = 24.sp
                 )
                 Text(
-                    "0",
-                    fontSize = 36.sp
+                    text = if (input.isEmpty()) "0" else input,
+                    fontSize = 30.sp
                 )
             }
             Column(
@@ -95,9 +106,6 @@ fun CalcScreenAndButton(){
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center
             ) {
-                var input by remember {
-                    mutableStateOf("")
-                }
                 OutlinedTextField(
                     value = input,
                     onValueChange = { newInput ->
@@ -172,9 +180,7 @@ fun CalcScreenAndButton(){
         }
         Box(Modifier.fillMaxSize())
     }
-
 }
-
 
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
